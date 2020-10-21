@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const io = socketio(server);
 const cors = require('cors');
 
-//const { use } = require('./router');
+
 
 
 io.on('connection', (socket) => {
@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
         const user = getUser(socket.id);
 
         io.to(user.room).emit('message', { user: user.name, text: message });
-        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+       
         callback();
     });
 
@@ -52,7 +52,8 @@ io.on('connection', (socket) => {
         //console.log('user disconnected');
         const user = removeUser(socket.id);
         if (user) {
-            io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left` })
+            io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left` });
+            io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
         }
     })
 

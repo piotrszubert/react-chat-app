@@ -16,14 +16,13 @@ const Chat = ({ location }) => {
     const [room, setRoom] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const ENDPOINT = 'localhost:5000';
+    //  const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = 'https://io-react-chat.herokuapp.com/';
 
     useEffect(() => {
         const { name, room } = queryString.parse(location.search);
 
         socket = io(ENDPOINT);
-
-
         //console.log(name, room);
         setName(name);
         setRoom(room);
@@ -40,10 +39,10 @@ const Chat = ({ location }) => {
     }, [ENDPOINT, location.search]);
 
     useEffect(() => {
-        socket.on('message', (message) => {
+        socket.on('message', message => {
             setMessages([...messages, message]);
         })
-    }, [messages]);
+    }, [message]);  // ????????????????????
 
 
 
@@ -63,7 +62,7 @@ const Chat = ({ location }) => {
 
                 <InfoBar room={room} />
                 <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage}/>
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
 
 
             </div>
